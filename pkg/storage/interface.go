@@ -3,6 +3,7 @@ package storage
 import "tasks/pkg/storage/postgres"
 
 type Interface interface {
+	NewData() error                             //Инициализация БД
 	NewTask(postgres.Task) (int, error)         //Новая задача
 	Tasks() ([]postgres.Task, error)            //Возвращает список всех задач
 	TaskByID(int) (postgres.Task, error)        //Возвращает задачу по идентификатору

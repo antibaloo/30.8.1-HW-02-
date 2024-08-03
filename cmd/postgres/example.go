@@ -21,7 +21,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	err := db.NewData()
+	if err != nil {
+		log.Fatal(err)
+	}
 	newTasks := []postgres.Task{
 		{
 			Title:    "Новая задача",
@@ -43,12 +46,13 @@ func main() {
 			LabelIDs:   []int{2},
 		},
 	}
+
 	for _, task := range newTasks {
 		taskID, err := db.NewTask(task)
 		if err != nil {
 			log.Println(err)
 		} else {
-			fmt.Println(taskID)
+			fmt.Println("Создана задача:", taskID)
 		}
 	}
 
@@ -56,39 +60,44 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	} else {
-		fmt.Println(tasks)
+		fmt.Println("Список всех задач: ", tasks)
 	}
 	tasks, err = db.TasksByAuthor(0)
 	if err != nil {
 		log.Println(err)
 	} else {
-		fmt.Println(tasks)
+		fmt.Println("Задачи автора 0:", tasks)
 	}
 	tasks, err = db.TasksByAuthor(1)
 	if err != nil {
 		log.Println(err)
 	} else {
-		fmt.Println(tasks)
+		fmt.Println("Задачи автора 1:", tasks)
 	}
 	tasks, err = db.TasksByLabel(2)
 	if err != nil {
 		log.Println(err)
 	} else {
-		fmt.Println(tasks)
+		fmt.Println("Задачи зачачи с меткой 2:", tasks)
 	}
 
 	err = db.DeleteTask(2)
 	if err != nil {
 		log.Println(err)
 	} else {
-		fmt.Println("Task #2 was deleted")
+		fmt.Println("Задача #2 удалена")
 	}
-
+	tasks, err = db.Tasks()
+	if err != nil {
+		log.Println(err)
+	} else {
+		fmt.Println("Список всех задач: ", tasks)
+	}
 	task, err := db.TaskByID(1)
 	if err != nil {
 		log.Println(err)
 	} else {
-		fmt.Println(tasks)
+		fmt.Println("Задача с номером 1: ", task)
 	}
 	task.Content += "_new"
 	task.Title += "_new"
@@ -100,12 +109,12 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	} else {
-		fmt.Println("Task #1 was updated")
+		fmt.Println("Задача #1 изменена")
 	}
 	task, err = db.TaskByID(1)
 	if err != nil {
 		log.Println(err)
 	} else {
-		fmt.Println(tasks)
+		fmt.Println("Задача с номером 1: ", task)
 	}
 }
